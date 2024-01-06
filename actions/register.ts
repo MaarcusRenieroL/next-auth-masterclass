@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { RegisterSchema } from "@/schemas";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
