@@ -31,6 +31,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       }
     }
 
-    return error;
+    return null;
   }
 }
