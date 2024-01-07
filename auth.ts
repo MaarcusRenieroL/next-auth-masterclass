@@ -1,28 +1,18 @@
-import NextAuth from "next-auth";
+import NextAuth from "next-auth"
+import { UserRole } from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
-import authConfig from "./auth.config";
-import { db } from "./lib/db";
-import { getUserById } from "./data/user";
-import { UserRole } from "@prisma/client";
+import { db } from "@/lib/db";
+import authConfig from "@/auth.config";
+import { getUserById } from "@/data/user";
 
 export const {
   handlers: { GET, POST },
   auth,
   signIn,
-  signOut
+  signOut,
 } = NextAuth({
   callbacks: {
-    async signIn({ user }) {
-
-      const existingUser = await getUserById(user.id);
-
-      if (!existingUser?.emailVerified) {
-        return false;
-      }
-
-      return true;
-    },
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
@@ -32,15 +22,10 @@ export const {
         session.user.role = token.role as UserRole;
       }
 
-      if (session.user) {
-        session.user.name = token.name;
-        session.user.email = token.email;
-      }
-
       return session;
     },
     async jwt({ token }) {
-      if (!token.sub) { 
+      if (!token.sub) {
         return token;
       }
 
@@ -50,8 +35,6 @@ export const {
         return token;
       }
 
-      token.name = existingUser.name;
-      token.email = existingUser.email;
       token.role = existingUser.role;
 
       return token;
@@ -59,6 +42,5 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  ...authConfig
-})
-
+  ...authConfig,
+});
