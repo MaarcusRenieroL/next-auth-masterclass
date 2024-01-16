@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { SessionProvider } from 'next-auth/react'
 import { auth } from '@/auth'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster } from 'sonner'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -22,6 +23,7 @@ export default async function RootLayout({
     <html lang="en">
       <SessionProvider session={session}>
         <body className={inter.className}>
+          <SpeedInsights />
           <Toaster />
           {children}
         </body>
