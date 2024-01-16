@@ -1,5 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { Dialog, DialogTrigger, DialogContent } from "@radix-ui/react-dialog";
+import { LoginForm } from "./login-form";
 
 interface LoginButtonProps {
   children: React.ReactNode;
@@ -18,7 +20,17 @@ export const LoginButton = ({
   };
 
   if (mode == "modal") {
-    return <span>TODO: Implement Modal</span>;
+
+    return (
+      <Dialog>
+        <DialogTrigger asChild={asChild}>
+          {children}
+        </DialogTrigger>
+        <DialogContent className="p-0 w-auto bg-transparent border-none">
+          <LoginForm />
+        </DialogContent>
+      </Dialog>
+    );
   }
 
   return (
