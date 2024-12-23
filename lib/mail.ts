@@ -4,33 +4,32 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const domain = process.env.NEXT_PUBLIC_APP_URL;
 
 export const sendTwoFactorEmail = async (email: string, token: string) => {
-
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: process.env.RESEND_EMAIL!,
     to: email,
     subject: "2FA Code",
-    html: `<p>Your 2FA code: ${token}. It expires in 5 minutes</p>`
-  })
-}
+    html: `<p>Your 2FA code: ${token}. It expires in 5 minutes</p>`,
+  });
+};
 
 export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: process.env.RESEND_EMAIL!,
     to: email,
     subject: "Confirm your email",
-    html: `<p>Click <a href="${confirmLink}">here</a> to verify your email</p>`
-  })
-}
+    html: `<p>Click <a href="${confirmLink}">here</a> to verify your email</p>`,
+  });
+};
 
 export const sendResetEmail = async (email: string, token: string) => {
   const resetLink = `${domain}/auth/new-password?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: process.env.RESEND_EMAIL!,
     to: email,
     subject: "Reset your password",
-    html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`
-  })
-}
+    html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`,
+  });
+};
